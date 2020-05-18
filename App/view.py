@@ -49,21 +49,6 @@ def printMenu():
     print("6- Nada")
     print("0- Salir")
 
-
-def initCatalog ():
-    """
-    Inicializa el catalogo
-    """
-    return controller.initCatalog()
-
-
-def loadData (catalog):
-    """
-    Carga las bibliotecas en la estructura de datos
-    """
-    controller.loadData(catalog)
-
-
 """
 Menu principal 
 """ 
@@ -72,63 +57,15 @@ def main():
         printMenu()
         inputs =input("Seleccione una opción para continuar\n")
         if int(inputs[0])==1:
-            print("Cargando información de los archivos ....")
-            catalog = initCatalog ()
-            loadData (catalog)
-            t = tree.size(catalog['date_city_trips'])
+            t = controller.loadData()
             print(t)
+            print('-----------------------------------------------------------------------------------------')
+            print(t['elements'][2])
+            print("Cargando información de los archivos ....")
         elif int(inputs[0])==2:
-            city = input('Ingrese nombre de la ciudad: ')
-            controller.stationsByDockCount(catalog, city)
-            
-        elif int(inputs[0])==3:
-            dates = input('Ingrese las fechas del intervalo (ej: 8/29/2013 1/1/2014) \n')
-            dat1 = dates.split(" ")[0]
-            dat2 = dates.split(" ")[1]
-            r = controller.trips_per_dates(catalog,dat1,dat2)
-            for city  in r:
-                print (city, r[city])
-
-        elif int(inputs[0])==4:
-            vertices =input("Ingrese el vertice origen y destino (EJEMPLO: HNL-1-25 ICT-1-25 ) \n")
-            lst = controller.getPath(catalog,vertices,'dfs')
-            print("El camino entre los vertices es:")
-            if lst is not None:
-                lst_it = it.newIterator(lst)
-                route=''
-                while it.hasNext(lst_it):
-                    city = it.next(lst_it)
-                    route += city + " "
-                print (route)
-            else:
-                print('\nNo hay camino para los vértices ingresados\n')
-            
-        elif int(inputs[0])==5:
-            vertices =input("Ingrese el vertice origen y destino (EJEMPLO: HNL-1-25 ICT-1-25 ) \n")
-            lst = controller.getPath(catalog,vertices,'bfs')
-            print("El camino entre los vertices es:")
-            if lst is not None:
-                lst_it = it.newIterator(lst)
-                route=''
-                while it.hasNext(lst_it):
-                    city = it.next(lst_it)
-                    route += city + " "
-                print (route)
-            else:
-                print('\nNo hay camino para los vértices ingresados\n')
-        elif int(inputs[0])==6:
-            vertices =input("Ingrese el vertice origen y destino. (Ejemplo: 'ALB-5-12 LAX-5-12')\n")
-            path = controller.getShortestPath(catalog,vertices)
-            if path == 'No hay camino' or path == 'No existen los vértices':
-                print (path)
-            else:
-                print("El camino de menor costo entre los vertices es:")
-                totalDist = 0
-                while not stk.isEmpty (path): 
-                    step = stk.pop(path)
-                    totalDist += step['weight']
-                    print (step['vertexA'] + "-->" + step['vertexB'] + " costo: " + str(step['weight']))
-                print ("Total: " + str (totalDist))
+            sec = input("Ingrese la seccion : \n ")
+            y = controller.promedio(t,sec)
+            print(y)
         else:
             sys.exit(0)
     sys.exit(0)
