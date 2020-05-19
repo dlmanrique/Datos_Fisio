@@ -42,11 +42,8 @@ operación solicitada
 def printMenu():
     print("Bienvenido al Laboratorio 9")
     print("1- Cargar información")
-    print("2- Req 1 ")
-    print("3- Req 2")
-    print("4- Req 3")
-    print("5- Req 4")
-    print("6- Nada")
+    print("2- Promedio y desviacion por integrante,seccion")
+    print("3- Promedio y desviacion por genero, integrante ")
     print("0- Salir")
 
 """
@@ -58,14 +55,21 @@ def main():
         inputs =input("Seleccione una opción para continuar\n")
         if int(inputs[0])==1:
             t = controller.loadData()
-            print(t)
-            print('-----------------------------------------------------------------------------------------')
-            print(t['elements'][2])
-            print("Cargando información de los archivos ....")
         elif int(inputs[0])==2:
             sec = input("Ingrese la seccion : \n ")
-            y = controller.promedio(t,sec)
-            print(y)
+            y = controller.consulta_integrante_seccion(t,sec)
+            print("Para la seccion " + sec + " ")
+            p = y[0]
+            d = y[1]
+            for r in p.keys() :
+                print("El promedio para integrante : "+ str(r) + " fue glucosa (t=0) " + str(p[r][0]) + " glucosa (t final) " + str(p[r][1]))
+            for u in d.keys():
+                print("La desviacion para integrante : "+str(u)+  " para glucosa (t=0) " + str(d[u][0]) + " glusosa (t final)" + str(d[u][1]))
+        elif int(inputs[0])==3:
+            sec = input("Ingrese la seccion : \n ")
+            y = controller.consulta_genero(t,sec)
+            print("Para la seccion " + sec + " ")
+            p = y[0]
         else:
             sys.exit(0)
     sys.exit(0)

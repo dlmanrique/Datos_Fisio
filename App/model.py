@@ -32,6 +32,7 @@ from datetime import datetime
 from DataStructures import dijkstra as dk
 from DataStructures import dfs as dfs 
 from DataStructures import bfs as bfs 
+import statistics as stata
 
 """
 Se define la estructura de un catálogo de libros.
@@ -41,18 +42,20 @@ y otra para géneros
 
 # Construccion de modelos
 
-def promedio (data, seccion) :
+def consulta_integrante_seccion (data,seccion):
+    """ Devuelvo primero los promedios"""
     t = []
     for row in data['elements'] :
         if ( seccion == row['Seccion '] ) :
             t.append(row)
-    print(t)
+    p = promedio_integrante(t)
+    t = desviacion_estandar_integrante(t)
+    return (p,t)
+
+def promedio_integrante (t) :
     dicc = {}
     for line in t :
-        #print(line)
         tratamiento = line['Integrante']
-        print(tratamiento)
-        print("----------------------------------------------------------")
         t_init = 0
         t_fin = 0 
         cont = 0
@@ -66,8 +69,47 @@ def promedio (data, seccion) :
         t_i = t_init / cont
         t_f = t_fin / cont
         dicc[tratamiento] = (t_i , t_f)
-        print(dicc)
     return dicc
+
+def desviacion_estandar_integrante(t):
+    dicc = {}
+    for line in t :
+        tratamiento = line['Integrante']
+        init = []
+        fin = []
+        for u in t :
+            if (u['Integrante'] == tratamiento ):
+                glucosa_init = float(u['Glucosa (t=0)'])
+                glucosa_fin = float(u['Glucosa (t=40)'])
+                init.append(glucosa_init)
+                fin.append(glucosa_fin)
+        e = round(stata.stdev(init),4)
+        y = round(stata.stdev(fin),4)
+        dicc[tratamiento] = (e,y)
+    return dicc
+
+def consulta_genero(data):
+    hombres = []
+    mujeres = []
+    dicc = {}
+    for row in data['elements'] :
+        if ( 'M' == row['Genero'] ) :
+            hombres.append(row)
+        else : 
+            mujeres.append(row)
+    
+    ph = promedio_integrante(hombres)
+    pm = promedio_integrante(mujeres)
+    dh = desviacion_estandar_integrante(hombres)
+    dm = desviacion_estandar_integrante(mujeres)
+    dicc['info_hombres'] = (ph,dh)
+    dicc['info_mujeres'] = (pm,dm)
+    return dicc
+
+
+
+
+
 
 
 
