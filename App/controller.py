@@ -66,11 +66,13 @@ def loadData ():
     print("Tiempo de ejecución carga archivo estaciones:",t1_stop-t1_start," segundos")  
     return data
 
-def consulta_integrante_seccion (r,secc) :
-    t = model.consulta_integrante_seccion(r,secc)
+def consulta_integrante_prom_desv (r) :
+    t = model.consulta_integrante_prom_desv(r)
     return t 
-
-def consulta_genero(data) :
-    t = model.consulta_genero(data)
+def consulta_por_genero(data) :
+    t = model.consulta_por_genero(data)
     return t 
+def consulta_total_generos(data):
+    r =  model.consulta_total_generos(data)
+    return r 
 

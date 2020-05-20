@@ -43,7 +43,8 @@ def printMenu():
     print("Bienvenido al Laboratorio 9")
     print("1- Cargar información")
     print("2- Promedio y desviacion por integrante,seccion")
-    print("3- Promedio y desviacion por genero, integrante ")
+    print("3- Consulta por genero ")
+    print("4- Total de hombres y mujeres")
     print("0- Salir")
 
 """
@@ -56,21 +57,30 @@ def main():
         if int(inputs[0])==1:
             t = controller.loadData()
         elif int(inputs[0])==2:
-            sec = input("Ingrese la seccion : \n ")
-            y = controller.consulta_integrante_seccion(t,sec)
-            print("Para la seccion " + sec + " ")
-            p = y[0]
-            d = y[1]
-            for r in p.keys() :
-                print("El promedio para integrante : "+ str(r) + " fue glucosa (t=0) " + str(p[r][0]) + " glucosa (t final) " + str(p[r][1]))
-            for u in d.keys():
-                print("La desviacion para integrante : "+str(u)+  " para glucosa (t=0) " + str(d[u][0]) + " glusosa (t final)" + str(d[u][1]))
+            y = controller.consulta_integrante_prom_desv(t)
+            print(y)
+            for r in y.keys() :
+                print( "Para integrante : " + str(r) + " ")
+                print(" Glucosa inicial, promedio : " +str(y[r]['Inicial'][0]) + " desviacion: " +str(y[r]['Inicial'][1])+ "" )
+                print(" Glucosa final, promedio : " +str(y[r]['Final'][0]) + " desviacion: " +str(y[r]['Final'][1])+ "" )
+                print("---------------------------------------------------------------------------------------------------------")
         elif int(inputs[0])==3:
-            sec = input("Ingrese la seccion : \n ")
-            y = controller.consulta_genero(t,sec)
-            print("Para la seccion " + sec + " ")
-            p = y[0]
-        else:
+            y = controller.consulta_por_genero(t)
+            print(y)
+            for r in y.keys():
+                print("Para integrante: "+str(r)+ " ")
+                print(" Hombres : ")
+                print("Glucosa promedio inicial : " +str(y[r]['Hombres']['Inicial'][0])+" desviacion : " +str(y[r]['Hombres']['Inicial'][1])+" ")
+                print("Glucosa promedio final : " +str(y[r]['Hombres']['Final'][0])+" desviacion : " +str(y[r]['Hombres']['Final'][1])+" ")
+                print("Mujeres : ")
+                print("Glucosa promedio inicial : " +str(y[r]['Mujeres']['Inicial'][0])+" desviacion : " +str(y[r]['Mujeres']['Inicial'][1])+" ")
+                print("Glucosa promedio final : " +str(y[r]['Mujeres']['Final'][0])+" desviacion : " +str(y[r]['Mujeres']['Final'][1])+" ")
+                print("-----------------------------------------------------------------------------------------------------------")
+        elif int(inputs[0])==4:
+            y = controller.consulta_total_generos(t)
+            print("Total mujeres : " + str(y[1])+ " ")
+            print("Total hombres : " + str(y[0])+ " ")
+        else :
             sys.exit(0)
     sys.exit(0)
 
